@@ -1,13 +1,36 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  imports: [],
+  template: `
+  <h1>Şart Blokları</h1>
+
+  @if(showFirstText) {
+    <p style="color: red;">Birinci yazı</p>
+  }
+
+  @if(showSecondText) {
+    <p style="color: green;">İkinci yazı</p>
+  }
+
+  <hr>
+  <button (click)="show(1)">Birinci yazıyı göster</button>
+  <button (click)="show(2)">İkinci yazıyı göster</button>
+  `,
 })
 export class AppComponent {
-  title = 'sart-bloklari';
+  showFirstText: boolean = false;
+  showSecondText: boolean = false;
+
+  show(num: number) {
+    if(num == 1) {
+      this.showFirstText = true;
+      this.showSecondText = false;
+    } else {
+      this.showFirstText = false;
+      this.showSecondText = true;
+    }
+  }
 }

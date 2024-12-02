@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sart-bloklari": {
+    "5-routing": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/sart-bloklari",
+            "outputPath": "dist/5-routing",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sart-bloklari:build:production"
+              "buildTarget": "5-routing:build:production"
             },
             "development": {
-              "buildTarget": "sart-bloklari:build:development"
+              "buildTarget": "5-routing:build:development"
             }
           },
           "defaultConfiguration": "development"
