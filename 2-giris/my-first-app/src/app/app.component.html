@@ -1,0 +1,12 @@
+<h1>App Component</h1>
+<!-- <p>{{ helloWorld }}</p> -->
+<p>{{merhabaDunya}}</p>
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure exercitationem ipsa est repudiandae asperiores aspernatur sed minus, molestiae pariatur atque sapiente porro vitae cum expedita modi, magnam illum commodi sit!</p>
+<app-home></app-home>
+<app-about></app-about>
+<app-contact></app-contact>
+<p [class]="pClassname">Lorem ipsum dolor sit amet.</p> <!-- property binding -->
+<input type="text" (keyup)="changeHelloWorldVariable($event)" /> <!-- event binding -->
+<br><br>
+<input type="text" [(ngModel)]="merhabaDunya" />
+<button (click)="clickMe()">Bana Tıkla</button>
