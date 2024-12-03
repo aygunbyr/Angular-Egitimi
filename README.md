@@ -1,5 +1,3 @@
-# Angular Kursu Notlarım
-
 Kurs Udemy Linki
 
 [Angular: Başlangıçtan Uzmanlığa (2024)](https://www.udemy.com/course/sfrdan-ileri-seviye-angular-egitimi/)
@@ -480,4 +478,146 @@ b.component.html
 
 ```tsx
 <ul>@for(t of ex.todos; track t) {<li>{{ t }}</li>}</ul>
+```
+
+### Pipe
+
+Pipe’lar dönüştürme işlemi yapan fonksiyonel yapılardır.
+
+- **Şablonlarda (HTML) veriyi dönüştürmek** için kullanılır.
+- **Veri formatını değiştirmek** gibi işlemleri kolaylaştırır.
+- **Kendi özel pipe’lerinizi** yazarak, projeye özel ihtiyaçlarınızı karşılayabilirsiniz.
+
+### Angular’ın Builtin Pipe’ları ve Pipe Örnekleri
+
+[Angular](https://angular.dev/guide/templates/pipes)
+
+Pipe oluşturmak (terminalde src/app dizininde iken)
+
+```tsx
+ng generate pipe todo
+```
+
+### TodoPipe Örneği
+
+app.component.ts
+
+```tsx
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
+import { TodoPipe } from './todo.pipe';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, FormsModule, TodoPipe],
+  template: `
+    <h1>Pipe</h1>
+    <div>
+      <input [(ngModel)]="work" />
+      <button (click)="save()">Save</button>
+    </div>
+    <div>
+      <input
+        type="search"
+        [(ngModel)]="search"
+        placeholder="Search something..."
+      />
+      <ul>
+        @for(t of todos | todo:search; track t) {
+        <li>{{ t }}</li>
+        }
+      </ul>
+    </div>
+  `,
+})
+export class AppComponent {
+  work: string = '';
+  todos: string[] = ['Domates', 'Armut', 'Elma'];
+  search: string = '';
+  save() {}
+}
+```
+
+todo.pipe.ts
+
+```tsx
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'todo',
+  standalone: true,
+})
+export class TodoPipe implements PipeTransform {
+  transform(value: string[], search: string): string[] {
+    if (!search) return value;
+    return value.filter((p) => p.includes(search));
+  }
+}
+```
+
+ChatGPT bunun yanlış bir örnek olduğunu söyledi.
+
+Evet, bu kodda kullanılan **Angular Pipe** örneği teknik olarak doğru ve çalışır, ancak filtreleme işlemleri için pipe kullanımı **best practice** (en iyi uygulama) olarak **tavsiye edilmez**. Bunun nedenleri şunlardır:
+
+### 1. **Performans Sorunları**
+
+Pipelar, Angular bileşenleri her değiştiğinde otomatik olarak yeniden çalıştırılır. Filtreleme gibi işlemler, özellikle büyük listelerde kullanıldığında performans sorunlarına neden olabilir. Angular, bu tür **yan etkili işlemleri** bileşenlerde veya servislerde yapmayı önerir.
+
+### 2. **Stateless Olmalı**
+
+Angular Pipe’lar stateless (durumsuz) işlemler için tasarlanmıştır. Yani girdiyi alıp çıktıyı dönüştürmelidir. Filtreleme gibi işlemler, giriş verisine bağlı olduğu için "durum bağımlı" hale gelir ve karmaşıklık artar
+
+### Filtreleme Best Practice Yöntem
+
+html
+
+```tsx
+<input type="search" [(ngModel)]="search" placeholder="Search something..." (ngModelChange)="filterTodos()">
+<ul>
+  <li *ngFor="let t of filteredTodos">{{ t }}</li>
+</ul>
+
+```
+
+typescript
+
+```tsx
+export class AppComponent {
+  work: string = '';
+  todos: string[] = ['Domates', 'Armut', 'Elma'];
+  search: string = '';
+  filteredTodos: string[] = [...this.todos];
+
+  save() {
+    if (this.work.trim()) {
+      this.todos.push(this.work.trim());
+      this.filterTodos(); // Yeni todo'yu filtrele
+      this.work = '';
+    }
+  }
+
+  filterTodos() {
+    this.filteredTodos = this.todos.filter((t) =>
+      t.toLowerCase().includes(this.search.toLowerCase())
+    );
+  }
+}
+```
+
+Name Pipe örneği
+
+```tsx
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'name',
+  standalone: true,
+})
+export class NamePipe implements PipeTransform {
+  transform(value: string, ...args: unknown[]): string {
+    return `Mr. ${value}`;
+  }
+}
 ```
